@@ -12,33 +12,30 @@
 
 int main(){
 	int sock, len = 0, p, cli, status;
-	struct sockaddr_in my, ser, client;
-//	struct hostent *h;
+	struct sockaddr_in client1, server;
 	char *host, buff[5], s[] = "172.19.13.239";
 	
 	bzero(buff,  sizeof(buff));
-	bzero(&my, sizeof(my));
-	bzero(&ser, sizeof(ser));
-        bzero(&client, sizeof(client));
+	bzero(&client1, sizeof(client1));
+	bzero(&server, sizeof(server));
 
-	my.sin_port = htons(5502);
-	my.sin_family = AF_INET;
-	my.sin_addr.s_addr = INADDR_ANY;	
+	client1.sin_port = htons(5502);
+	client1.sin_family = AF_INET;
+	client1.sin_addr.s_addr = INADDR_ANY;	
 
-	ser.sin_family = AF_INET;
-	ser.sin_port = htons(5500);
-	inet_pton(AF_INET, "172.19.13.239", &ser.sin_addr);	
+	server.sin_family = AF_INET;
+	server.sin_port = htons(5500);
+	inet_pton(AF_INET, "172.19.13.239", &server.sin_addr);	
 	
-//	bcopy(h->h_addr, (char *)&my.sin_addr, h->h_length);
 
 	sock = socket(AF_INET, SOCK_STREAM, 0);
 	if(sock <  0){
 		perror("socket:");
 		exit(1);
 	}
-	bind(sock, (struct sockaddr *)&my, sizeof(my));
+	bind(sock, (struct sockaddr *)&client1, sizeof(client1));
 	
-	if(connect(sock, (struct sockaddr *)&my, sizeof(my)) < 0){
+	if(connect(sock, (struct sockaddr *)&client1, sizeof(client1)) < 0){
 		perror("connect:");
 		close(sock);
 		exit(1);
